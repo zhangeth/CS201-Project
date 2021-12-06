@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.example.demo.domain.UserRepository;
-import com.example.demo.service.AuthenticationService;
+import com.example.demo.security.service.AuthenticationService;
 
 @ExtendWith(MockitoExtension.class)
 @RunWith(JUnitPlatform.class)
