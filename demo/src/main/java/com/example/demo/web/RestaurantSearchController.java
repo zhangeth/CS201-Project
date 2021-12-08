@@ -1,6 +1,12 @@
 package com.example.demo.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import javax.validation.Valid;
@@ -14,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.domain.Restaurant;
 import com.example.demo.domain.RestaurantRepository;
+import com.example.demo.domain.RestaurantSearchRepository;
 import com.example.demo.payload.RestaurantSearchRequest;
 
 import com.example.demo.service.RestaurantSearchService;
@@ -35,18 +42,32 @@ public class RestaurantSearchController {
 	RestaurantSearchService service;
 	
 	@Autowired
-	RestaurantRepository restaurantRepository;
+	RestaurantSearchRepository restaurantRepository;
 	
 	@GetMapping("/search")
-	public Restaurant getRestaurantYelp(@Valid @RequestBody RestaurantSearchRequest request) throws InterruptedException, ExecutionException{
-		String name = request.getName();
-		Restaurant r = (Restaurant) restaurantRepository.findByName(name);
-		if ( r == null) {
-			return service.getRestaurantYelp(name);
+	public List<Restaurant> getAllRestaurants(@Valid @RequestBody RestaurantSearchRequest request) throws InterruptedException, ExecutionException
+	{
+		String search = request.getSearch();
+		String[] names = search.split(",");
+		for (String name: names) {
+			name.trim();
 		}
-		else {
-			return r;
+		Vector<CompletableFuture<List<Restaurant>>> list = new Vector<CompletableFuture<List<Restaurant>>>();
+		int numRestaurants = names.length;
+
+		for (int i = 0; i <numRestaurants; i++) {
+			CompletableFuture<List<Restaurant>> future = service.getAllRestaurants(names[i]);
+			list.add(future);
 		}
+		CompletableFuture.allOf(list.toArray(new CompletableFuture[list.size()])).join();
+		Set<Restaurant> restaurantSet = new HashSet<>();
+		for (int i = 0; i < numRestaurants; i++) {
+			restaurantSet.addAll(list.get(i).get());
+		}
+		List<Restaurant> finalList = new ArrayList<>();
+		finalList.addAll(restaurantSet);
+		return finalList;
+		
 	}
 
 }

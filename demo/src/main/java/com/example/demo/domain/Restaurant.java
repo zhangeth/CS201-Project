@@ -28,12 +28,24 @@ public class Restaurant {
 	public Restaurant() {
 
 	}
+	public Restaurant(String name) {
+		super();
 
+
+		this.name = name;
+		this.cuisine = "";
+		this.price = "";
+		this.menuLink = "";
+
+		this.avgRating = 0.0;
+	}
 	public Restaurant(String name, String cuisine, String price, String location) {
 		this.name = name;
 		this.cuisine = cuisine;
 		this.price = price;
 		this.location = location;
+		menuLink = "";
+		avgRating = 0.0;
 	}
 
 	// getters/setters

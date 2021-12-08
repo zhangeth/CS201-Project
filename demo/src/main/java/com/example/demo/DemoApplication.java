@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import java.util.concurrent.Executor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.example.demo.domain.Bookmark;
 import com.example.demo.domain.BookmarkRepository;
@@ -53,10 +56,26 @@ public class DemoApplication {
 			UserRepository.save(new User("1", "2", "email", "user"));
 			ImageRepository.save(new Image(1, "url"));
 			PostRepository.save(new Post());
+			//restaurants
+			RestaurantRepository.save(new Restaurant("Mcdonalds"));
+			RestaurantRepository.save(new Restaurant("a", "AssCuisine", "$$$", "ArseAvenue"));
+			RestaurantRepository.save(new Restaurant("b","BootyCuisine", "$$$$", "ButtholeBoulevard"));
+			RestaurantRepository.save(new Restaurant("c", "CockCuisine", "$", "CockCourt"));
+			
 			RestaurantRepository.save(new Restaurant());
 			EventRepository.save(new Event());
 			BookmarkRepository.save(new Bookmark());
 		};
+	}
+	@Bean
+	public Executor taskExecutor() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+	    executor.setCorePoolSize(4);
+	    executor.setMaxPoolSize(4);
+	    executor.setQueueCapacity(500);
+	    executor.setThreadNamePrefix("RestaurantLookup-");
+	    executor.initialize();
+	    return executor;
 	}
 
 }

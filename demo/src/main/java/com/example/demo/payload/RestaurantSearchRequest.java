@@ -1,11 +1,16 @@
 package com.example.demo.payload;
 
-public class RestaurantSearchRequest {
-	private String name;
-	public String getName() {
-		return name;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+public class RestaurantSearchRequest { //search takes name(s) of restaurants separated by commas if multiple restaurants
+	@NotBlank
+	@Size(min = 1, max = 20)
+	private String search;
+	public String getSearch() {
+		return search;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setSearch(String search) {
+		this.search = search;
 	}
 }
