@@ -7,5 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GroupRepository extends JpaRepository<Group, Long> {
-	Optional<Post> findByGroupID(long groupID);
+	Boolean existsByGroupID(Long groupID);
+
+	Optional<Group> findByGroupID(Long groupID);
 }

@@ -9,14 +9,23 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-	Optional<Post> findByPostID(long postID);
+	Boolean existsByPostID(Long postID);
 
-//	List<Post> findByUserID(long userID);
+	List<Post> findAllByOrderByDateDesc();
+
+	List<Post> findAllByOrderByLikesDesc();
+
+	List<Post> findAllByUserInOrderByDateDesc(Iterable<User> users);
+
+	Optional<Post> findByPostID(Long postID);
+
+	@Query(value = "SELECT * FROM Posts p where p.restaurant.getRestaurantID = ?1", nativeQuery = true)
+	List<Post> findByRestaurantID(Long restaurantID);
+
+	@Query(value = "COUNT * FROM Posts p where p.restaurant.getRestaurantID = ?1", nativeQuery = true)
+	long getRestaurantNumPosts(Long restaurantID);
+
+	// List<Post> findByUserID(long userID);
 	@Query(value = "SELECT * FROM Posts p WHERE p.user.getUserID = ?1", nativeQuery = true)
-	List<Post> getUserPosts(long userID);
-
-	List<Post> findByRestaurantID(long restaurantID);
-
-	@Query(value = "COUNT * FROM Posts p where p.restaurantID = ?1", nativeQuery = true)
-	long getRestaurantNumPosts(long restaurantID);
+	List<Post> getUserPosts(Long userID);
 }

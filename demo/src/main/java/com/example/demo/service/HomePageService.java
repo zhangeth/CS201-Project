@@ -13,10 +13,10 @@ package com.example.demo.service;
 //{
 //    @Autowired
 //    PostRepository repository;
-//     
+//
 //    public HomePage getHomePage(Long key)
 //    {
-// 
+//
 //        HomePage result = new HomePage();
 //        result.postID = key;
 //        Club c = repository.findByClubid(key);

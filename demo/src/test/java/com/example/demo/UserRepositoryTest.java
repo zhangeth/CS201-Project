@@ -24,14 +24,6 @@ public class UserRepositoryTest {
 	@Autowired
 	private UserRepository repository;
 
-	// Testing the addition of a user to the database
-	@Test
-	public void saveUser() {
-		User user = new User();
-		entityManager.persistAndFlush(user);
-		assertThat(user.getUserID()).isNotNull();
-	}
-
 	// Testing the removal of users from the database
 	@Test
 	public void deleteUsers() {
@@ -39,5 +31,13 @@ public class UserRepositoryTest {
 		entityManager.persistAndFlush(new User());
 		repository.deleteAll();
 		assertThat(repository.findAll()).isEmpty();
+	}
+
+	// Testing the addition of a user to the database
+	@Test
+	public void saveUser() {
+		User user = new User();
+		entityManager.persistAndFlush(user);
+		assertThat(user.getUserID()).isNotNull();
 	}
 }
